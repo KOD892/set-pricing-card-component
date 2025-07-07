@@ -1,7 +1,7 @@
-<template lang="">
+<template >
      <div class="card flex f-column">
-        <div class="card-header grid grid-three">
-            <div class="option" id="basic">
+        <div class="card-header grid grid-three" @click="changeOption($event)">
+            <div  class="option" id="basic">
                    Basic 
             </div>
             <div  id="standard" class="option selected">
@@ -11,33 +11,37 @@
                 Premium
             </div>
         </div>
-        <div class="card-body">
-            <div class="price pb-1">
-                <p> STANDARD</p>
-                <h3 class="flex"><span class="">Icon Sets</span><span class="">$120</span></h3>
-            </div>
-            <div class="details">
-            <div class="pb-1" id="description">              Up to 100 creative & professional icons + two color version/themes per month
-            </div>
-                <div class="checklist">
-                    <ul>
-                        <li>Included Source files</li>
-                        <li>Converted to responsive componnet</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="footer pt-2 center">
-                <button class="pt-1 pb-1">Add to Cart</button>
-            </div>
-        </div>
-        
+        <PriceDetails :option="pricingOptions[0][currentOption]" />
     </div>
 </template>
 <script setup>
-
-
+import {ref} from 'vue';
+import PriceDetails from './components/PriceDetails.vue';
+const currentOption = ref('standard');
+const pricingOptions = [{   standard:{name:"Standard",
+                            price:"$120",
+                                    description:"Up to 100 creative & professional icons + two color version/themes per month",
+                                    options:[{text:'Included Source files',checked:true},{text:'Converted to responsive componnet', checked:true}]},
+                            basic:{name:"Basic",
+                                    price:"$80",
+                                    description:"Up to 50 creative & professional icons + one color version/themes",
+                                    options:[{text:'Included Source files',checked:true},{text:'Converted to responsive componnet', checked:false}]}, 
+                            premium:{name:"Premium",
+                                    price:"$240",
+                                    description:"Unlimited creative & professional icons + unlimited color version/themes per month",
+                                    options:[{text:'Included Source files',checked:true},{text:'Converted to responsive componnet', checked:true}]}
+                        }]
+                                  
+const changeOption = (e)=>{
+    console.log(e.target.classList)
+    if(e.target.classList.contains('option')){
+        e.target.parentNode.childNodes.forEach(element => {element.classList.remove('selected')});
+        e.target.classList.add('selected');
+        currentOption.value = e.target.id;
+    }
+}
 </script>
-<style lang="">
-    
+
+<style scoped>
+
 </style>
